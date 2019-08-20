@@ -4,48 +4,49 @@ import {
   removeCourseAction,
   modifyCourseAction,
   initCourseListAction,
-} from '../course-panel/course-panel.action'
+} from './dashboard.action'
 import { db } from '../data/firebase'
 import CourseList from '../course-list/course-list.component'
 import ManageMeta from '../manage-meta/manage-meta.component'
 import { navigate } from '@reach/router'
-import { StyledControlPanel } from './course-panel.style';
+import { StyledControlPanel } from './dashboard.style';
 import { WebInfoState } from '../web-info/web-info.context'
-import PanelTitle from '../panel-title';
+import HeaderTitle from '../_dumb/header-title/header-title.component';
 
-const CoursePanel = () => {
+const Dashboard = () => {
   const defaultCourse = {
     title: '',
     description: '',
     id: null,
   }
-  const [ course, setCourse ] = useState(defaultCourse)
+  const [course, setCourse] = useState(defaultCourse)
   const { courseList, updateCourseList } = WebInfoState()
+  const courseCollection = db.collection('course')
   useEffect(() => {
     let unsubscribe;
 
     if (!courseList.length) {
       (async () => {
         // I want to get a list of courses from FireStore
-        const courseCollection = db
-          .collection('course')
-    
+
         try {
-          const snapList = await courseCollection.get()
+          const snapList = await courseCollection
+            .orderBy('order', 'asc')
+            .get()
           const courseList = snapList.docs.map(d => {
             return {
               id: d.id,
               ...d.data()
             }
           })
-  
+
           updateCourseList(initCourseListAction(courseList))
-  
+
           unsubscribe = await courseCollection
             .onSnapshot(snapList => {
               snapList.docChanges().forEach(change => {
                 const course = change.doc.data()
-  
+
                 if (change.type === 'added' && change.doc.metadata.hasPendingWrites) {
                   updateCourseList(addCourseAction({
                     title: course.title,
@@ -68,7 +69,7 @@ const CoursePanel = () => {
                 }
               })
             })
-        } catch(e) {
+        } catch (e) {
           console.error('getCourseCollection() failed!', e)
         }
       })()
@@ -76,19 +77,6 @@ const CoursePanel = () => {
 
     return unsubscribe
   }, [])
-
-  const deleteItem = id => {
-    (async () => {
-      try {
-        await db
-          .collection('course')
-          .doc(id)
-          .delete()
-      } catch (message) {
-        console.log(`Weird message!`, message)
-      }
-    })()
-  }
 
   const save = () => {
     const courseCollection = db.collection('course')
@@ -113,11 +101,6 @@ const CoursePanel = () => {
       .map(({ title, description }) => ({ title, description }))[0] || {}
   }
 
-  const handleUpdate = id => {
-    const { title, description } = getUpdateValue(courseList, id)
-    setCourse({ id, title, description })
-  }
-
   const change = what => {
     setCourse({ ...course, ...what })
   }
@@ -132,9 +115,42 @@ const CoursePanel = () => {
 
   const getSaveLabel = () => course.id ? "Update course" : "Add course"
 
+  const addCourseTitlePropList = {
+    text: 'Add Course',
+    tag: 'h1',
+    fontSize: '22px',
+  }
+
+  const manageCourseTitlePropList = {
+    text: 'Manage Course',
+    tag: 'h1',
+    fontSize: '22px',
+  }
+
+  const updateOrder = (a, b) => {
+    const list = [...courseList]
+    const [ first ] = list.splice(a, 1)
+    list
+      .splice(b, 0, first)
+      
+    const batch = db.batch()
+    list
+      .map((o, order) => ({ ...o, order}))
+      .forEach(({ id, order }) => {
+        batch.set(
+          courseCollection.doc(id),
+          { order },
+          { merge: true }
+        )
+      })
+    batch.commit().then(r => {
+      updateCourseList(initCourseListAction(list))
+    })
+  }
+
   return (
     <StyledControlPanel>
-      <PanelTitle>Add Course</PanelTitle>
+      <HeaderTitle {...addCourseTitlePropList} />
       <ManageMeta
         label={getSaveLabel()}
         save={save}
@@ -142,15 +158,15 @@ const CoursePanel = () => {
         cancel={cancel}
         data={course}
       />
-      <PanelTitle>Manage course</PanelTitle>
+
+      <HeaderTitle {...manageCourseTitlePropList} />
       <CourseList
         courseList={courseList}
-        handleUpdate={handleUpdate}
-        deleteItem={deleteItem}
         goToCourse={goToCourse}
+        updateOrder={updateOrder}
       />
     </StyledControlPanel>
   )
 }
 
-export default CoursePanel
+export default Dashboard

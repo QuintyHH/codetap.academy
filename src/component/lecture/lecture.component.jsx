@@ -1,77 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../data/firebase";
-import { Link } from "@reach/router";
-import { storage } from "firebase";
+import React, { useEffect, useState } from 'react';
+import { db } from '../data/firebase';
+import { Link } from '@reach/router';
+import ImageUploader from '../image-uploader/image-uploader.component';
+import lectureSchema from './lecture.schema';
+import DynamicForm from '../_dumb/dynamic-form';
+import { async } from 'q';
 
 const Lecture = ({ lectureId }) => {
-  const [lecture, setLecture] = useState();
-  const [image, setImage] = useState("");
-  const [imageURL, setImageURL] = useState(null);
-  const [imageUploadProgress, setImageUploadProgress] = useState(0);
+  const [lecture, setLecture] = useState({});
+  const lectureDocument = db.collection('lecture').doc(lectureId);
 
   useEffect(() => {
     (async () => {
-      const lectureSnapshot = await db
-        .collection("lecture")
-        .doc(lectureId)
-        .get();
-
-      setLecture(lectureSnapshot.data());
+      const l = await lectureDocument.get();
+      if (!Object.keys(lecture).length) {
+        setLecture(l.data());
+      }
     })();
-  }, [lectureId]);
+  }, [lecture]);
 
-  const handleImageChange = e => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    } else {
-      setImage("");
-    }
+  const updateImagePath = imagePath => {
+    lectureDocument.set({ imagePath }, { merge: true });
   };
 
-  const handleImageUpload = () => {
-    storage()
-      .ref(`lecture-picture/${image.name}`)
-      .put(image)
-      .on(
-        "state_changed",
-        snapshot => {
-          setImageUploadProgress(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-        },
-        error => {
-          console.log(`Woops! ${error.message} while uploading ${image.name}`);
-        },
-        () => {
-          storage()
-            .ref("lecture-picture")
-            .child(image.name)
-            .getDownloadURL()
-            .then(url => setImageURL(url));
-        }
-      );
+  const handlePublish = () => {
+    lectureDocument.set({ published: !lecture.published }, { merge: true });
   };
 
   return (
     <div>
       <h1>Lecture {lectureId}</h1>
+      <DynamicForm schema={lectureSchema} data={lecture} dbItem={lectureDocument} />
+      <button onClick={handlePublish}>{lecture.published ? 'Unp' : 'P'}ublish Lecture</button>
       {lecture && lecture.course && (
-        <p>
-          Back to{" "}
-          <Link to={`/course/${lecture.course.id}`}>
-            {lecture.course.title}
-          </Link>
-        </p>
+        <>
+          <p>
+            Back to <Link to={`/course/${lecture.course.id}`}>{lecture.course.title}</Link>
+          </p>
+          <ImageUploader
+            lectureId={lectureId}
+            imagePath={lecture.imagePath}
+            onSuccess={updateImagePath}
+          />
+        </>
       )}
-      <progress value={imageUploadProgress} max="100" />
-      <input type="file" onChange={handleImageChange} />
-      <button onClick={handleImageUpload}>Upload Image</button>
-      <img
-        src={imageURL || "http://via.placeholder.com/600x300"}
-        alt={image.name}
-        height="300"
-        width="600"
-      />
     </div>
   );
 };

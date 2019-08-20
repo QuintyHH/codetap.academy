@@ -2,6 +2,90 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/codetapacademy/codetap.academy/compare/v0.7.0...v0.8.0) (2019-08-20)
+
+
+### Bug Fixes
+
+* home button readability and refactor course panel into dashboard ([ca56e0b](https://github.com/codetapacademy/codetap.academy/commit/ca56e0b))
+
+
+### Features
+
+* add order to course ([ca02b61](https://github.com/codetapacademy/codetap.academy/commit/ca02b61)), closes [#121](https://github.com/codetapacademy/codetap.academy/issues/121)
+* show a video to be played that is loaded from YouTube in an embed ([8cecdf0](https://github.com/codetapacademy/codetap.academy/commit/8cecdf0)), closes [#160](https://github.com/codetapacademy/codetap.academy/issues/160)
+* style the play-video component to be 16/9 ratio ([bbf176a](https://github.com/codetapacademy/codetap.academy/commit/bbf176a))
+
+
+
+## [0.7.0](https://github.com/codetapacademy/codetap.academy/compare/v0.7.0-alpha.0...v0.7.0) (2019-08-17)
+
+
+### Features
+
+* add a **Watch this Course NOW** button next to the title of the course in the home page ([9047fd4](https://github.com/codetapacademy/codetap.academy/commit/9047fd4)), closes [#147](https://github.com/codetapacademy/codetap.academy/issues/147)
+* add youtube presentation features ([a2f0e71](https://github.com/codetapacademy/codetap.academy/commit/a2f0e71)), closes [#144](https://github.com/codetapacademy/codetap.academy/issues/144) [#148](https://github.com/codetapacademy/codetap.academy/issues/148) [#149](https://github.com/codetapacademy/codetap.academy/issues/149)
+* add YouTube video Id to the lecture ([7cdc435](https://github.com/codetapacademy/codetap.academy/commit/7cdc435)), closes [#145](https://github.com/codetapacademy/codetap.academy/issues/145)
+* generate YouTube preview using the default image from YouTube thumbnail if no image is currently uploaded for the current lecture ([59ca3d6](https://github.com/codetapacademy/codetap.academy/commit/59ca3d6)), closes [#146](https://github.com/codetapacademy/codetap.academy/issues/146)
+
+
+
+## [0.7.0-alpha.0](https://github.com/codetapacademy/codetap.academy/compare/v0.6.0...v0.7.0-alpha.0) (2019-08-17)
+
+
+### Bug Fixes
+
+* add navigate from reach/router ([e2c830f](https://github.com/codetapacademy/codetap.academy/commit/e2c830f))
+
+
+### Features
+
+* Bogdan is super eager to start with updating this component to hide the dashboard button when the user is not logged in ([a1674b0](https://github.com/codetapacademy/codetap.academy/commit/a1674b0))
+* log in or out to dashboard ([c072dad](https://github.com/codetapacademy/codetap.academy/commit/c072dad)), closes [#137](https://github.com/codetapacademy/codetap.academy/issues/137)
+* update the top-menu by changing the dashboard dipplay off ([d447e70](https://github.com/codetapacademy/codetap.academy/commit/d447e70))
+
+
+
+## [0.6.0](https://github.com/codetapacademy/codetap.academy/compare/v0.5.0...v0.6.0) (2019-08-12)
+
+
+### Features
+
+* delete image when parent is removed ([aff1081](https://github.com/codetapacademy/codetap.academy/commit/aff1081)), closes [#128](https://github.com/codetapacademy/codetap.academy/issues/128)
+* implement replace image feature ([5023be4](https://github.com/codetapacademy/codetap.academy/commit/5023be4)), closes [#122](https://github.com/codetapacademy/codetap.academy/issues/122)
+* improve labels in github ([68292b1](https://github.com/codetapacademy/codetap.academy/commit/68292b1)), closes [#129](https://github.com/codetapacademy/codetap.academy/issues/129)
+* update chat to self host ([de50d92](https://github.com/codetapacademy/codetap.academy/commit/de50d92))
+
+
+
+## [0.5.0](https://github.com/codetapacademy/codetap.academy/compare/v0.4.0...v0.5.0) (2019-08-06)
+
+
+### Bug Fixes
+
+* homepage doesn't look good on desktop or mobile ([e685bdd](https://github.com/codetapacademy/codetap.academy/commit/e685bdd)), closes [#114](https://github.com/codetapacademy/codetap.academy/issues/114)
+* remove unnecessary empty div tag when chat is hidden ([a48a6b5](https://github.com/codetapacademy/codetap.academy/commit/a48a6b5))
+* top menu is on top of the chat ([ca5504b](https://github.com/codetapacademy/codetap.academy/commit/ca5504b))
+
+
+### Features
+
+* add default image if a lecture doesn't have one ([0121484](https://github.com/codetapacademy/codetap.academy/commit/0121484)), closes [#118](https://github.com/codetapacademy/codetap.academy/issues/118)
+* add lecture info to home page ([c6ca314](https://github.com/codetapacademy/codetap.academy/commit/c6ca314))
+* add responsive thumbnail and style lecture info ([769e557](https://github.com/codetapacademy/codetap.academy/commit/769e557))
+* build a smarter pre-loader for the image upload component ([2abe1d0](https://github.com/codetapacademy/codetap.academy/commit/2abe1d0)), closes [#105](https://github.com/codetapacademy/codetap.academy/issues/105)
+* Create a config for prettier as default project setting ([54226e4](https://github.com/codetapacademy/codetap.academy/commit/54226e4)), closes [#104](https://github.com/codetapacademy/codetap.academy/issues/104)
+* display an image in the lecture manage area if one has been uploaded ([cec8dfe](https://github.com/codetapacademy/codetap.academy/commit/cec8dfe))
+* Implement a logo on the top menu for CodeTap Academy with a slogan ([0d5253d](https://github.com/codetapacademy/codetap.academy/commit/0d5253d))
+* make the chat be sticky so the send message input element is visible all times to the user ([736a004](https://github.com/codetapacademy/codetap.academy/commit/736a004))
+* move home into the Logo ([d33bc6c](https://github.com/codetapacademy/codetap.academy/commit/d33bc6c))
+* publish / unpublish a lecture is on ([f809862](https://github.com/codetapacademy/codetap.academy/commit/f809862))
+* refator header title over panel title ([0d0cb96](https://github.com/codetapacademy/codetap.academy/commit/0d0cb96))
+* update the header tags style to maximize real estate ([3932c78](https://github.com/codetapacademy/codetap.academy/commit/3932c78))
+* we can now publish and unpublish courses ([f62fc53](https://github.com/codetapacademy/codetap.academy/commit/f62fc53))
+
+
+
 ## [0.4.0](https://github.com/codetapacademy/codetap.academy/compare/v0.3.0...v0.4.0) (2019-07-30)
 
 
